@@ -1,5 +1,8 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 List<List<int>> winningPositions = [
   [0, 1, 2],
@@ -15,7 +18,7 @@ List<List<int>> winningPositions = [
 void main() {
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) => MyApp(),
     ),
   );
@@ -94,14 +97,69 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              // Turn
+          child: Center(
+            child: Column(
+              children: [
+                // Turn
+                Text(
+                  "${turn ? "X" : "O"} is to play",
+                  style: GoogleFonts.fredoka(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Spacer(),
 
-              // Game
+                // Game
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: GridView.builder(
+                    itemCount: 9,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    itemBuilder: (context, index) {
+                      bool? info = data[index];
+                      return CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          if (info == null) {
+                            data[index] = turn;
+                            checkWin();
+                            setState(() {});
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: info != null
+                              ? Center(
+                                  child: SvgPicture.asset(
+                                    "assets/${info == true ? "x" : "o"}.svg",
+                                  ),
+                                )
+                              : Center(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
 
-              // Button
-            ],
+                // Button
+                Spacer(),
+                CupertinoButton(
+                  color: Colors.red,
+                  onPressed: () {
+                    reset();
+                  },
+                  child: Center(child: Text("Reset")),
+                ),
+              ],
+            ),
           ),
         ),
       ),
