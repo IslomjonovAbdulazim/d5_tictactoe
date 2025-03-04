@@ -90,6 +90,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              // Turn
+
+              // Game
+
+              // Button
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
